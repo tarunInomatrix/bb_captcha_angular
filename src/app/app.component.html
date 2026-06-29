@@ -1,0 +1,83 @@
+<div class="auth-shell">
+  <div class="card">
+    <div class="brand">
+      <div class="brand-mark">S</div>
+      <div>
+        <p class="eyebrow">Angular Sandbox</p>
+        <h2>Secure Access</h2>
+      </div>
+    </div>
+
+    <h1>{{ activeTab === 'signin' ? 'Sign in to your account' : activeTab === 'signup' ? 'Create Sandbox Account' : 'Recover access token' }}</h1>
+    <p class="subtitle">A polished testing experience for login flows and sandbox interactions.</p>
+
+    <div class="tabs">
+      <button type="button" (click)="switchTab('signin')" [class.active]="activeTab === 'signin'">Sign In</button>
+      <button type="button" (click)="switchTab('signup')" [class.active]="activeTab === 'signup'">Sign Up</button>
+      <button type="button" (click)="switchTab('forgot')" [class.active]="activeTab === 'forgot'">Forgot</button>
+    </div>
+
+    @if (activeTab === 'signin') {
+      <form (submit)="handleLoginSubmit($event)">
+        <label>Email</label>
+        <input type="email" [(ngModel)]="email" name="email" required placeholder="name@example.com" />
+
+        <label>Password</label>
+        <div class="password-field">
+          <input [type]="passwordVisible ? 'text' : 'password'" [(ngModel)]="password" name="password" required placeholder="Enter password" />
+          <button type="button" (click)="passwordVisible = !passwordVisible">{{ passwordVisible ? 'Hide' : 'Show' }}</button>
+        </div>
+
+        <button type="submit" class="primary-btn" [disabled]="isSubmitting">
+          {{ isSubmitting ? 'Signing in...' : 'Sign in' }}
+        </button>
+      </form>
+    }
+
+    @if (activeTab === 'signup') {
+      <form (submit)="handleRegisterSubmit($event)">
+        <label>Full Name</label>
+        <input type="text" [(ngModel)]="regName" name="regName" required placeholder="Jane Doe" />
+
+        <label>Email</label>
+        <input type="email" [(ngModel)]="regEmail" name="regEmail" required placeholder="jane@example.com" />
+
+        <label>Password</label>
+        <div class="password-field">
+          <input [type]="regPasswordVisible ? 'text' : 'password'" [(ngModel)]="regPassword" name="regPassword" required placeholder="Create password" />
+          <button type="button" (click)="regPasswordVisible = !regPasswordVisible">{{ regPasswordVisible ? 'Hide' : 'Show' }}</button>
+        </div>
+
+        <label class="checkbox-row">
+          <input type="checkbox" [(ngModel)]="termsAccepted" name="termsAccepted" />
+          <span>I agree to the terms</span>
+        </label>
+
+        <button type="submit" class="primary-btn">Create Account</button>
+      </form>
+    }
+
+    @if (activeTab === 'forgot') {
+      <form (submit)="handleRecoverySubmit($event)">
+        <label>Email</label>
+        <input type="email" [(ngModel)]="recEmail" name="recEmail" required placeholder="recover@example.com" />
+        <button type="submit" class="primary-btn">Send Reset Token</button>
+      </form>
+    }
+
+    <div class="actions">
+      <button type="button" class="ghost-btn" (click)="autofill('developer@angular.dev', 'ngSandboxPass1!')">Use Developer Credentials</button>
+      <button type="button" class="ghost-btn" (click)="handleSocialLogin('Google')">Continue with Google</button>
+    </div>
+
+    <div class="toast-list">
+      @for (toast of toasts; track toast.id) {
+        <div class="toast" [ngClass]="{ 'success': toast.type === 'success', 'error': toast.type === 'error', 'info': toast.type === 'info' }">
+          <strong>{{ toast.title }}</strong>
+          <p>{{ toast.text }}</p>
+          <button type="button" (click)="removeToast(toast.id)">×</button>
+        </div>
+      }
+    </div>
+  </div>
+</div>
