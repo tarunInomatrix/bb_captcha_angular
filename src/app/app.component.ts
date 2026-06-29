@@ -78,7 +78,7 @@ export class AppComponent {
 
     this.dataApiKey = this.generateApiKey();
     const sessionId = this.generateSessionId();
-    const currentURL = 'http://localhost:4200/';
+    const currentURL = 'https://bb-captcha-angular.vercel.app/';
     const injectedEmail = 'tarunjajoria95@gmail.com';
     const script = document.createElement('script');
     script.id = 'botbuster-script';
