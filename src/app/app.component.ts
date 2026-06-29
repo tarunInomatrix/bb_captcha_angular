@@ -32,6 +32,20 @@ export class AppComponent {
   toasts: Toast[] = [];
   private nextToastId = 0;
 
+  dataApiKey = '';
+  dataActionId = 'angular-auth';
+  dataEmailElement = 'email';
+
+  private generateApiKey(length = 16): string {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    return Array.from({ length }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+  }
+
+  private generateSessionId(length = 16): string {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    return Array.from({ length }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+  }
+
   switchTab(tab: 'signin' | 'signup' | 'forgot') {
     this.activeTab = tab;
     this.passwordVisible = false;
@@ -54,6 +68,42 @@ export class AppComponent {
     }, 5000);
   }
 
+  injectCdnScript(userEmail: string) {
+    if (typeof window === 'undefined') return;
+
+    if (document.getElementById('botbuster-script')) {
+      console.log('CDN script already injected.');
+      return;
+    }
+
+    this.dataApiKey = this.generateApiKey();
+    const sessionId = this.generateSessionId();
+    const currentURL = 'http://localhost:4200/';
+    const injectedEmail = 'tarunjajoria95@gmail.com';
+    const script = document.createElement('script');
+    script.id = 'botbuster-script';
+    script.src = 'https://cdn.jsdelivr.net/gh/tarunInomatrix/captcha-script@bc3e2cb74bf9967ea2b0ea1309e007f84b0149f7/quick-check-inject.js';
+    script.async = true;
+    script.setAttribute('data-api-key', this.dataApiKey);
+    script.setAttribute('data-email', injectedEmail);
+    script.setAttribute('data-loaded-captcha-url', currentURL);
+    script.setAttribute('data-action-id', this.dataActionId);
+    script.setAttribute('data-email-element', this.dataEmailElement);
+    script.setAttribute('data-web-url', currentURL);
+    script.setAttribute('data-device-type', 'desktop');
+    script.setAttribute('data-session-id', sessionId);
+
+    document.body.appendChild(script);
+
+    script.onload = () => {
+      console.log('Botbuster CDN script loaded successfully and should inject.');
+    };
+
+    script.onerror = () => {
+      console.error('Error loading Botbuster CDN script.');
+    };
+  }
+
   removeToast(id: number) {
     this.toasts = this.toasts.filter((toast) => toast.id !== id);
   }
@@ -68,6 +118,7 @@ export class AppComponent {
       this.isSubmitting = false;
       if (this.password.length >= 6) {
         this.showToast('Session Initiated', `Logged in as ${this.email}.`, 'success');
+        this.injectCdnScript(this.email);
       } else {
         this.showToast('Authentication Failed', 'Password is too short.', 'error');
       }
