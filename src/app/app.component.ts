@@ -82,7 +82,7 @@ export class AppComponent {
     const injectedEmail = 'tarunjajoria95@gmail.com';
     const script = document.createElement('script');
     script.id = 'botbuster-script';
-    script.src = 'https://cdn.jsdelivr.net/gh/tarunInomatrix/captcha-script@bc3e2cb74bf9967ea2b0ea1309e007f84b0149f7/quick-check-inject.js';
+    script.src = 'https://botbuste.b-cdn.net/quick-check-inject.js';
     script.async = true;
     script.setAttribute('data-api-key','3ee57ddd-2946-449a-9908-8a28d7ce3960');
     script.setAttribute('data-email', injectedEmail);
