@@ -1,0 +1,120 @@
+<div class="page-container">
+  <div class="card dev-card">
+    <div class="brand">
+      <div class="brand-mark">D</div>
+      <div>
+        <p class="eyebrow">Development Sandbox</p>
+        <h2>BotBuster Captcha [DEV]</h2>
+      </div>
+    </div>
+
+    <h1>{{ activeTab === 'signin' ? 'Dev Sandbox Sign In' : activeTab === 'signup' ? 'Create Dev Account' : 'Recover Dev
+      Token' }}</h1>
+    <p class="subtitle">Testing and validating experimental BotBuster CDN scripts in isolated dev mode.</p>
+
+    <div class="tabs">
+      <button type="button" (click)="switchTab('signin')" [class.active]="activeTab === 'signin'">Sign In</button>
+      <button type="button" (click)="switchTab('signup')" [class.active]="activeTab === 'signup'">Sign Up</button>
+      <button type="button" (click)="switchTab('forgot')" [class.active]="activeTab === 'forgot'">Forgot</button>
+    </div>
+
+    @if (activeTab === 'signin') {
+    <form (submit)="handleLoginSubmit($event)">
+      <label for="dev-email">Email</label>
+      <input id="dev-email" type="email" [(ngModel)]="email" name="email" required
+        placeholder="developer@example.dev" />
+
+      <label for="dev-password">Password</label>
+      <div class="password-field">
+        <input id="dev-password" [type]="passwordVisible ? 'text' : 'password'" [(ngModel)]="password" name="password"
+          required placeholder="Enter dev password (min 6 chars)" />
+        <button type="button" (click)="passwordVisible = !passwordVisible">{{ passwordVisible ? 'Hide' : 'Show'
+          }}</button>
+      </div>
+
+      <button type="submit" class="primary-btn dev-btn" [disabled]="isSubmitting">
+        {{ isSubmitting ? 'Simulating & Ingesting...' : 'Sign in (Trigger Dev Captcha)' }}
+      </button>
+
+      <!-- Botbuster Captcha Injected Container -->
+      <div id="botbuster-container" class="captcha-box"></div>
+    </form>
+    }
+
+    @if (activeTab === 'signup') {
+    <form (submit)="handleRegisterSubmit($event)">
+      <label for="dev-reg-name">Full Name</label>
+      <input id="dev-reg-name" type="text" [(ngModel)]="regName" name="regName" required placeholder="Developer Bob" />
+
+      <label for="dev-reg-email">Email</label>
+      <input id="dev-reg-email" type="email" [(ngModel)]="regEmail" name="regEmail" required
+        placeholder="bob@dev.internal" />
+
+      <label for="dev-reg-password">Password</label>
+      <div class="password-field">
+        <input id="dev-reg-password" [type]="regPasswordVisible ? 'text' : 'password'" [(ngModel)]="regPassword"
+          name="regPassword" required placeholder="Create dev password" />
+        <button type="button" (click)="regPasswordVisible = !regPasswordVisible">{{ regPasswordVisible ? 'Hide' : 'Show'
+          }}</button>
+      </div>
+
+      <label class="checkbox-row">
+        <input type="checkbox" [(ngModel)]="termsAccepted" name="termsAccepted" />
+        <span>I accept developer testing terms</span>
+      </label>
+
+      <button type="submit" class="primary-btn dev-btn">Create Dev Account</button>
+    </form>
+    }
+
+    @if (activeTab === 'forgot') {
+    <form (submit)="handleRecoverySubmit($event)">
+      <label for="dev-rec-email">Email</label>
+      <input id="dev-rec-email" type="email" [(ngModel)]="recEmail" name="recEmail" required
+        placeholder="dev@internal.corp" />
+      <button type="submit" class="primary-btn dev-btn">Dispatch Dev Reset Token</button>
+    </form>
+    }
+
+
+
+    <!-- Dev Config Customizer Drawer -->
+    @if (showConfigDrawer) {
+    <div class="dev-config-box">
+      <div class="config-header">
+        <strong>Override Dev CDN URL</strong>
+        <button type="button" class="clean-btn" (click)="resetCdnUrl()">Reset to Default</button>
+      </div>
+      <input type="text" [(ngModel)]="cdnScriptUrl" class="config-input" placeholder="CDN Script URL" />
+
+      <div class="config-header" style="margin-top: 10px;">
+        <strong>Dev API Key</strong>
+      </div>
+      <input type="text" [(ngModel)]="dataApiKey" class="config-input" placeholder="API Key" />
+
+      <div class="config-header" style="margin-top: 10px;">
+        <strong>Target Local URL</strong>
+      </div>
+      <input type="text" [(ngModel)]="currentURL" class="config-input" placeholder="Current URL" />
+    </div>
+    }
+
+    <!-- Dev Status Panel -->
+
+
+    <!-- Dev Event Logs Console -->
+
+
+    <!-- Toast Notifications -->
+    <div class="toast-list">
+      @for (toast of toasts; track toast.id) {
+      <div class="toast"
+        [ngClass]="{ 'success': toast.type === 'success', 'error': toast.type === 'error', 'info': toast.type === 'info' }">
+        <strong>{{ toast.title }}</strong>
+        <p>{{ toast.text }}</p>
+        <button type="button" (click)="removeToast(toast.id)">×</button>
+      </div>
+      }
+    </div>
+  </div>
+</div>

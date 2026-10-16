@@ -1,1 +1,26 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --font-main: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  
+  --bg-prod: radial-gradient(circle at 10% 20%, rgba(16, 185, 129, 0.08) 0%, rgba(248, 250, 252, 1) 90%);
+  --bg-dev: radial-gradient(circle at 10% 20%, rgba(245, 158, 11, 0.08) 0%, rgba(248, 250, 252, 1) 90%);
+  
+  --primary-prod: #059669;
+  --primary-dev: #d97706;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: #f8fafc;
+  color: #0f172a;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}

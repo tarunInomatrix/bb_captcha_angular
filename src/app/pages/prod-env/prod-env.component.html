@@ -1,0 +1,95 @@
+<div class="page-container">
+  <div class="card">
+    <div class="brand">
+      <div class="brand-mark">P</div>
+      <div>
+        <p class="eyebrow">Production Flow</p>
+        <h2>BotBuster Captcha</h2>
+      </div>
+    </div>
+
+    <h1>{{ activeTab === 'signin' ? 'Production Sign In' : activeTab === 'signup' ? 'Create Prod Account' : 'Recover
+      Production Access' }}</h1>
+    <p class="subtitle">Live verification using official BotBuster production CDN bundle.</p>
+
+    <div class="tabs">
+      <button type="button" (click)="switchTab('signin')" [class.active]="activeTab === 'signin'">Sign In</button>
+      <button type="button" (click)="switchTab('signup')" [class.active]="activeTab === 'signup'">Sign Up</button>
+      <button type="button" (click)="switchTab('forgot')" [class.active]="activeTab === 'forgot'">Forgot</button>
+    </div>
+
+    @if (activeTab === 'signin') {
+    <form (submit)="handleLoginSubmit($event)">
+      <label for="email">Email</label>
+      <input id="email" type="email" [(ngModel)]="email" name="email" required placeholder="user@prod-example.com" />
+
+      <label for="prod-password">Password</label>
+      <div class="password-field">
+        <input id="prod-password" [type]="passwordVisible ? 'text' : 'password'" [(ngModel)]="password" name="password"
+          required placeholder="Enter password (min 6 chars)" />
+        <button type="button" (click)="passwordVisible = !passwordVisible">{{ passwordVisible ? 'Hide' : 'Show'
+          }}</button>
+      </div>
+
+      <button type="submit" class="primary-btn" [disabled]="isSubmitting">
+        {{ isSubmitting ? 'Verifying & Signing In...' : 'Sign In' }}
+      </button>
+
+      <!-- Botbuster Captcha Injected Container -->
+      <div id="botbuster-container" class="captcha-box"></div>
+    </form>
+    }
+
+    @if (activeTab === 'signup') {
+    <form (submit)="handleRegisterSubmit($event)">
+      <label for="prod-reg-name">Full Name</label>
+      <input id="prod-reg-name" type="text" [(ngModel)]="regName" name="regName" required
+        placeholder="Production Admin" />
+
+      <label for="prod-reg-email">Email</label>
+      <input id="prod-reg-email" type="email" [(ngModel)]="regEmail" name="regEmail" required
+        placeholder="admin@domain.com" />
+
+      <label for="prod-reg-password">Password</label>
+      <div class="password-field">
+        <input id="prod-reg-password" [type]="regPasswordVisible ? 'text' : 'password'" [(ngModel)]="regPassword"
+          name="regPassword" required placeholder="Create strong password" />
+        <button type="button" (click)="regPasswordVisible = !regPasswordVisible">{{ regPasswordVisible ? 'Hide' : 'Show'
+          }}</button>
+      </div>
+
+      <label class="checkbox-row">
+        <input type="checkbox" [(ngModel)]="termsAccepted" name="termsAccepted" />
+        <span>I accept the production terms of service</span>
+      </label>
+
+      <button type="submit" class="primary-btn">Create Prod Account</button>
+    </form>
+    }
+
+    @if (activeTab === 'forgot') {
+    <form (submit)="handleRecoverySubmit($event)">
+      <label for="prod-rec-email">Account Email</label>
+      <input id="prod-rec-email" type="email" [(ngModel)]="recEmail" name="recEmail" required
+        placeholder="recover@domain.com" />
+      <button type="submit" class="primary-btn">Send Production Reset Link</button>
+    </form>
+    }
+
+
+    <!-- Production Config & Status Inspector -->
+
+
+    <!-- Toast Notifications -->
+    <div class="toast-list">
+      @for (toast of toasts; track toast.id) {
+      <div class="toast"
+        [ngClass]="{ 'success': toast.type === 'success', 'error': toast.type === 'error', 'info': toast.type === 'info' }">
+        <strong>{{ toast.title }}</strong>
+        <p>{{ toast.text }}</p>
+        <button type="button" (click)="removeToast(toast.id)">×</button>
+      </div>
+      }
+    </div>
+  </div>
+</div>
