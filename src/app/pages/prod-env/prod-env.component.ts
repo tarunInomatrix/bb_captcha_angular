@@ -34,7 +34,7 @@ export class ProdEnvComponent implements OnDestroy {
   // Production Environment Configuration
   readonly envName = 'Production';
   readonly cdnScriptUrl = 'https://botbuste.b-cdn.net/prod/quick-check-inject-prod.js';
-  readonly dataApiKey = '3ee57ddd-2946-449a-9908-8a28d7ce3960';
+  readonly dataApiKey = '63a1d49b-3a0d-45fc-b9f5-ecbdb853a2f0';
   readonly currentURL = 'https://bb-captcha-angular.vercel.app/';
   readonly injectedEmail = 'tarunjajoria95@gmail.com';
   readonly dataActionId = 'angular-auth';
